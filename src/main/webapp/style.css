@@ -1,0 +1,144 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+.container{
+    border-radius: 10px;
+    overflow: hidden;
+}
+/* left content */
+.left_content{
+    display: flex;
+    justify-content: center;
+    /*align-items: center;*/
+    background-color: #eef2f3;
+    height: 600px;
+}
+.province_list{
+    list-style: none;
+    padding: 6px;
+}
+.province_list li{
+    padding: 6px;
+    border-radius: 5px;
+}
+.province_list li:hover{
+
+    background-color: #fff;
+}
+li.active{
+    background-color: #ffffff;
+}
+.province_list li a{
+    text-decoration: none;
+    color: #000;
+}
+.center_content{
+    /*padding-top: 50px;*/
+    padding: 50px 24px 0px;
+}
+.top_component{
+    display: flex;
+    justify-content: space-between;
+}
+.search{
+    padding: 5px 12px;
+    border: solid #000 1px;
+    border-radius: 5px;
+    height: 47px;
+}
+.search > input{
+    outline: none;
+    border-style: none;
+    width: 258px;
+}
+.search i{
+    padding: 8px 12px;
+}
+.quick_access{
+    display: flex;
+    font-size: 11px;
+}
+.date{
+    margin: 0 -5px 15px -9px;
+}
+.city_temp{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-around;
+    background-color: #eef2f3;
+    margin: 0 -5px 15px 20px;
+    padding: 10px 30px;
+    border-radius: 10px;
+}
+.city_temp.active{
+    border: 1px solid #cccccc;
+}
+.temp{
+    font-size: 24px;
+}
+.over_view_div{
+display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    align-items: center;
+    justify-content: space-between;
+}
+.attibute_popular{
+    position: relative;
+    background-color: #eef2f3;
+    border-radius: 10px;
+    padding: 48px 32px 12px 20px;
+    margin: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.attribute_txt{
+    position: absolute;
+    top: 15px;
+    left: 20px;
+}
+.value_attribute{
+    display: flex;
+    flex-direction: column;
+}
+.vl_text{
+    font-size: 10px;
+}
+/* .progress-bar {
+    width: 200px;
+    height: 20px;
+    background-color: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress {
+    height: 100%;
+    width: 50%;
+    background-color: #007bff;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+  } */
+/* right content */
+.right_content{
+    background-color: #eef2f3;
+}
+
+
+/* độ C */
+.temperature {
+    font-size: 34px;
+}
+
+.value {
+    color: #000000; /* Màu sắc cho giá trị nhiệt độ */
+}
+
+.unit {
+    color: #bfbfbf; /* Màu sắc cho đơn vị độ C */
+}
