@@ -48,7 +48,7 @@ public class WeatherMartService {
         List<Weather_day_record> weatherDataList = new ArrayList<Weather_day_record>();
 
         try {
-            String query = "SELECT * FROM weather_day_records";
+            String query = "SELECT * FROM weather_day_records WHERE is_vailable= 'TRUE' AND date_forcast >= NOW()";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -66,7 +66,7 @@ public class WeatherMartService {
                 weatherData.setCloud_cover(resultSet.getInt("cloud_cover"));
                 weatherData.setPrecipitation(resultSet.getInt("precipitation"));
                 weatherData.setAccumulation(resultSet.getFloat("accumulation"));
-                weatherData.setIs_vailable("is_vailable");
+                weatherData.setIs_available("is_available");
                 // Set other attributes as needed
                 weatherDataList.add(weatherData);
             }

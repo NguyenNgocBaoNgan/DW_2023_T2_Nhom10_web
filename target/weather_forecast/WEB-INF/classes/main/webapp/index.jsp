@@ -164,48 +164,66 @@
                     } else {
                         // Display your data here
                         for (Weather_day_record data : dataList) { %>
-  
-                <div class="city_temp col-md-2 active" >
+
+                <div class="city_temp col-md-2 active" onclick="window.location.href='detail?id=<%=data.getId()%>'">
                     <span class="time" > <%=data.getTime_record()%> - <%=data.getDate_record()%> </span >
                     <span class="temp font-weight-bold" > <%=data.getTemperature()%> &deg;C
                 </span >
                     <span class="city font-weight-bold" > <%=data.getDescription()%></span >
                     <span class="city" > UV:<%=data.getFeel_like()%> </span >
                 </div >
-<%--                <div class="city_temp col-md-2" >--%>
-<%--                    <span class="time" > 20:00 - 20 / 11 </span >--%>
-<%--                    <span class="temp font-weight-bold" > 22 & deg;--%>
-<%--                C </span >--%>
-<%--                    <span class="city font-weight-bold" > Mây rải rác</span >--%>
-<%--                    <span class="city" > UV:Thấp </span >--%>
-<%--                </div >--%>
-<%--                <div class="city_temp col-md-2" >--%>
-<%--                    <span class="time" > 21:00 - 20 / 11 </span >--%>
-<%--                    <span class="temp font-weight-bold" > 22 & deg;--%>
-<%--                C </span >--%>
-<%--                    <span class="city font-weight-bold" > Mây rải rác</span >--%>
-<%--                    <span class="city" > UV:Thấp </span >--%>
-<%--                </div >--%>
-<%--                <div class="city_temp col-md-2" >--%>
-<%--                    <span class="time" > 22:00 - 20 / 11 </span >--%>
-<%--                    <span class="temp font-weight-bold" > 23 & deg;--%>
-<%--                C </span >--%>
-<%--                    <span class="city font-weight-bold" > Mây rải rác</span >--%>
-<%--                    <span class="city" > UV:Thấp </span >--%>
-<%--                </div >--%>
-<%--                <div class="city_temp col-md-2" >--%>
-<%--                    <span class="time" > 23:00 - 20 / 11 </span >--%>
-<%--                    <span class="temp font-weight-bold" > 24 & deg;--%>
-<%--                C </span >--%>
-<%--                    <span class="city font-weight-bold" > Mây rải rác</span >--%>
-<%--                    <span class="city" > UV:Thấp </span >--%>
-<%--                </div >--%>
+<
 
         <%}
         }
-        %>
 
+        %>
+                <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        // Hàm để thực hiện AJAX request và cập nhật dữ liệu trang
+                        function updateWeatherData() {
+                            $.ajax({
+                                type: "POST",
+                                url: "/WeatherController", // Đặt URL của servlet hoặc controller của bạn ở đây
+                                dataType: "json", // Kì vọng dữ liệu JSON từ máy chủ
+                                success: function (data) {
+                                    // Kiểm tra xem có dữ liệu mới hay không
+                                    if (data.length > 0) {
+                                        // Hiển thị dữ liệu mới
+                                        $(".quick_access").empty(); // Xóa nội dung cũ
+
+                                        $.each(data, function (index, newData) {
+                                            // Xây dựng HTML cho mỗi phần tử dữ liệu mới
+                                            var newElement = $("<div class='city_temp col-md-2 active' onclick='window.location.href=\"detail?id=" + newData.id + "\"'>" +
+                                                "<span class='time'>" + newData.time_record + " - " + newData.date_record + "</span>" +
+                                                "<span class='temp font-weight-bold'>" + newData.temperature + " &deg;C</span>" +
+                                                "<span class='city font-weight-bold'>" + newData.description + "</span>" +
+                                                "<span class='city'>UV:" + newData.feel_like + "</span>" +
+                                                "</div>");
+
+                                            // Thêm phần tử mới vào .quick_access
+                                            $(".quick_access").append(newElement);
+                                        });
+                                    } else {
+                                        // Nếu không có dữ liệu mới, có thể thực hiện các xử lý khác hoặc báo cáo
+                                        console.log("No new data found");
+                                    }
+                                },
+                                error: function (error) {
+                                    console.error("Error:", error);
+                                }
+                            });
+                        }
+
+                        // Gọi hàm cập nhật sau mỗi 5 giây
+                        setInterval(updateWeatherData, 5000);
+                    });
+                </script>
+
+                
             </div>
+
             <h5 class="over_view_text">Tổng quan</h5>
             <div class="over_view_div">
                 <div class="attibute_popular col-md-5">

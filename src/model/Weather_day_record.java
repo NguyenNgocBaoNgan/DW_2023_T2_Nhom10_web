@@ -13,7 +13,7 @@ public class Weather_day_record {
     public int cloud_cover;
     public int precipitation;
     public float accumulation;
-    public String is_vailable;
+    public String is_available;
 
     public int getId() {
         return id;
@@ -111,11 +111,11 @@ public class Weather_day_record {
         this.accumulation = accumulation;
     }
 
-    public String getIs_vailable() {
-        return is_vailable;
+    public String getIs_available() {
+        return is_available;
     }
 
-    public void setIs_vailable(String is_vailable) {
-        this.is_vailable = is_vailable;
+    public void setIs_available(String is_available) {
+        this.is_available = is_available;
     }
 }
