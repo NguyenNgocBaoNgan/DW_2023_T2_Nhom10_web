@@ -49,7 +49,7 @@
             <ul class="province_list">
 
                 <% for (Weather_day_record data1 : dataList1) { %>
-                <li onclick="window.location.href='WeatherController?province=<%=data1.getProvince()%>'">
+                <li onclick="window.location.href='WeatherController?province=<%=data1.getProvince()%>&id=<%=data1.getId()%>'">
                     <i class="fa fa-map-marker" ></i >
                     <a href = "#" class="weather_city" >
                         <%=data1.getProvince()%>
@@ -73,6 +73,7 @@
                     <i class="fa fa-map-marker text-secondary" ></i >
                 </div >
             </div >
+
             <div class="quick_access row mt-3" >
                 <%
                     List<Weather_hour_record> dataList = (List<Weather_hour_record>)request.getAttribute("whr_byProvince");
@@ -207,10 +208,14 @@
             </div>
         </div>
 <%--        Right--%>
+        <%
+
+            Weather_hour_record w = dataList.get(0);
+
+        %>
         <div class="col-md-4 right_content">
-            
-            <p class="text-center mt-3">19:00 - 20/11</p>
-            <p class="text-center">Thành phố Hồ Chí Minh</p>
+            <p class="text-center mt-3"><%=w.getTime_forcast()%> - <%=w.getDate_forcast()%></p>
+            <p class="text-center"><%=w.getProvince()%></p>
             <div class="text-center mt-5">
                 <div class="d-flex flex-row justify-content-center">
                     <div class="text-center me-3">
@@ -218,45 +223,45 @@
                     </div>
                     <div class="">
                         <div class="temperature">
-                            <span class="value">25&deg;C</span>
+                            <span class="value"><%=w.getTemperature()%>&deg;C</span>
                         </div>
-                        <p class="text-start text-secondary">Trời mưa</p>
+                        <p class="text-start text-secondary"><%=w.getDescription()%></p>
                     </div>
                 </div>
                 <div class="px-3 mt-5">
                     <div class="col-12 row justify-content-between row mt-3 px-3">
                         <div class="col-7 text-secondary text-start"><i class="bi bi-thermometer-half"></i></span> Cảm giác nhiệt: </div>
-                        <div class="col-5 text-secondary text-end">33&deg;</div>
+                        <div class="col-5 text-secondary text-end"><%=w.getFeel_like()%>&deg;</div>
                     </div>
                     <hr>
                     <div class="col-12 row justify-content-between row mt-3 px-3">
                         <div class="col-7 text-secondary text-start"><i class="bi bi-cloud"></i></span> Trạng thái: </div>
-                        <div class="col-5 text-secondary text-end">Nhiều mây</div>
+                        <div class="col-5 text-secondary text-end">Nhiều mây </div>
                     </div>
                     <hr>
                     <div class="col-12 row justify-content-between row mt-3 px-3">
                         <div class="col-7 text-secondary text-start"><i class="bi bi-cloud-fog2"></i></span> Hướng gió: </div>
-                        <div class="col-5 text-secondary text-end">TTB</div>
+                        <div class="col-5 text-secondary text-end"><%=w.getWind_direction()%></div>
                     </div>
                     <hr>
                     <div class="col-12 row justify-content-between row mt-3 px-3">
                         <div class="col-7 text-secondary text-start"><i class="bi bi-wind"></i></span> Tốc độ gió: </div>
-                        <div class="col-5 text-secondary text-end">2km/h</div>
+                        <div class="col-5 text-secondary text-end"><%=w.getWind_speed()%>km/h</div>
                     </div>
                     <hr>
                     <div class="col-12 row justify-content-between row mt-3 px-3">
                         <div class="col-7 text-secondary text-start"><i class="bi bi-droplet"></i></span> Độ ẩm: </div>
-                        <div class="col-5 text-secondary text-end">93%</div>
+                        <div class="col-5 text-secondary text-end"><%=w.getHumidity()%>%</div>
                     </div>
                     <hr>
                     <div class="col-12 row justify-content-between row mt-3 px-3">
                         <div class="col-7 text-secondary text-start"><i class="bi bi-brightness-high"></i></span> Chỉ số UV: </div>
-                        <div class="col-5 text-secondary text-end">0/11</div>
+                        <div class="col-5 text-secondary text-end"><%=w.getUv_index()%></div>
                     </div>
                     <hr>
                     <div class="col-12 row justify-content-between row mt-3 px-3">
                         <div class="col-7 text-secondary text-start"><span><i class="bi bi-cloud-rain-heavy"></i></span> Lượng mưa: </div>
-                        <div class="col-5 text-secondary text-end">0 cm</div>
+                        <div class="col-5 text-secondary text-end"><%=w.getAccumulation()%> cm</div>
                     </div>
                     <hr>
                 </div>

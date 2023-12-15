@@ -32,21 +32,22 @@ public class WeatherController extends HttpServlet {
         // Step 2: Query data from the weather_mart database
         String province = request.getParameter("province");
 
+       // System.out.println(actualID);
+
         List<Weather_hour_record> whr_byProvince = null;
         List<Weather_day_record> weatherDataList = WeatherMartService.getAllWeatherData();
         whr_byProvince = Weather_hour_record_Service.getWeatherhourByProvince(province);
-//            whr = Weather_hour_record_Service.getWeatherhourById(actualID);
-
 
         // Step 4: Check if data is available
         if (weatherDataList.isEmpty()) {
-            response.getWriter().write("No data found");
+            response.getWriter().write("No data foundxsxsxs");
             return;
         }
 
         // Step 5: Set data list in request attribute
         request.setAttribute("weatherDataList", weatherDataList);
         request.setAttribute("whr_byProvince",whr_byProvince);
+
 
         // Step 6: Forward to the JSP page to display data
         request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -68,7 +69,7 @@ public class WeatherController extends HttpServlet {
 
         String province = request.getParameter("province");
         System.out.println(province);
-        // Giả sử bạn có một phương thức để lấy dữ liệu đã cập nhật
+        //  phương thức để lấy dữ liệu đã cập nhật
         List<Weather_hour_record> updatedWeatherDataList = null;
         try {
             updatedWeatherDataList = getUpdatedWeatherData(province);
@@ -90,15 +91,13 @@ public class WeatherController extends HttpServlet {
 
     private List<Weather_hour_record> getUpdatedWeatherData(String province) throws SQLException {
         // Thực hiện logic để lấy dữ liệu thời tiết đã cập nhật từ cơ sở dữ liệu
-        // Bạn có thể tái sử dụng dịch vụ WeatherMartService hiện tại hoặc tạo một phương thức dịch vụ mới
-        // Ví dụ:
+
         return Weather_hour_record_Service.getWeatherhourByProvince(province);
     }
 
     private String convertDataListToJson(List<Weather_hour_record> dataList) {
         // Thực hiện logic để chuyển đổi danh sách dữ liệu thành định dạng JSON
-        // Bạn có thể sử dụng một thư viện JSON như Jackson hoặc Gson cho mục đích này
-        // Ví dụ sử dụng Gson:
+
         Gson gson = new Gson();
         return gson.toJson(dataList);
     }

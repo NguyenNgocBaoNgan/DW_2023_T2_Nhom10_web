@@ -23,8 +23,6 @@ public class Weather_hourController extends HttpServlet {
         }
         // Step 2: Query data from the weather_mart database
         String province = request.getParameter("province");
-        System.out.println(1);
-        System.out.println(province);
         String id = request.getParameter("id");
         int actualID = Integer.parseInt(id);
         System.out.println(actualID);
