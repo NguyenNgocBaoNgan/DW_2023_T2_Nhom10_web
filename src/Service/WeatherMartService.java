@@ -48,7 +48,7 @@ public class WeatherMartService {
         List<Weather_day_record> weatherDataList = new ArrayList<Weather_day_record>();
 
         try {
-            String query = "SELECT * FROM weather_day_records WHERE is_vailable= 'TRUE' AND date_forcast >= NOW()";
+            String query = "SELECT * FROM weather_day_records WHERE is_available= 'TRUE' AND date_forcast >= NOW()";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 

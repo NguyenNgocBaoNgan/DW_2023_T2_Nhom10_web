@@ -31,116 +31,35 @@
 
 <%@ page import="java.util.List" %>
 <%@ page import="model.Weather_day_record" %>
+<%@ page import="model.Weather_hour_record" %>
 <div class="container">
-
-    <!-- Check if the user is still on the web page and make AJAX calls if needed -->
-    <script>
-        // Add your AJAX calls here
-    </script>
 
     <div class="row" >
 
+
         <div class="col-md-2 left_content pt-10" >
-            <ul class="province_list" >
-                <li class="active" >
+            <%
+                List<Weather_day_record> dataList1 = (List<Weather_day_record>)request.getAttribute("weatherDataList");
+                if (dataList1 == null || dataList1.isEmpty()) {
+            %>
+            <div>No data found</div>
+            <%
+            } else {%>
+
+            <ul class="province_list">
+
+                <% for (Weather_day_record data1 : dataList1) { %>
+                <li onclick="window.location.href='WeatherController?province=<%=data1.getProvince()%>'">
                     <i class="fa fa-map-marker" ></i >
                     <a href = "#" class="weather_city" >
-                        TP.Hồ Chí Minh
+                        <%=data1.getProvince()%>
                     </a >
                 </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Thừa Thiên Huế
-                    </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Đồng Nai
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Vũng Tàu
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Đà Nẵng
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Quảng Nam
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Quảng Trị
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Bắc Ninh
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Bắc Kạn
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Bình Dương
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Tây Ninh
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Phú Yên
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Quảng Ngãi
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Long An
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-map-marker" ></i >
-                    <a href = "#" class="weather_city" >
-                        Tiền Giang
-                        </a >
-                </li >
-                <li >
-                    <i class="fa fa-arrow-down" ></i >
-                    <a href = "#" class="weather_city" >
-                        Xem thêm
-                        </a >
-                </li >
-
-
+                <%}
+                }
+                %>
             </ul >
+
         </div >
         <div class="col-md-6 center_content" >
             <div class="top_component" >
@@ -156,23 +75,23 @@
             </div >
             <div class="quick_access row mt-3" >
                 <%
-                    List<Weather_day_record> dataList = (List<Weather_day_record>)request.getAttribute("weatherDataList");
+                    List<Weather_hour_record> dataList = (List<Weather_hour_record>)request.getAttribute("whr_byProvince");
                     if (dataList == null || dataList.isEmpty()) {
                 %>
                 <div>No data found</div>
                 <%
-                    } else {
-                        // Display your data here
-                        for (Weather_day_record data : dataList) { %>
+                } else {
+                    // Display your data here
+                    for (Weather_hour_record data : dataList) { %>
 
                 <div class="city_temp col-md-2 active" onclick="window.location.href='detail?id=<%=data.getId()%>'">
-                    <span class="time" > <%=data.getTime_record()%> - <%=data.getDate_record()%> </span >
+                    <span class="time" > <%=data.getTime_forcast()%> - <%=data.getDate_forcast()%> </span >
                     <span class="temp font-weight-bold" > <%=data.getTemperature()%> &deg;C
                 </span >
                     <span class="city font-weight-bold" > <%=data.getDescription()%></span >
                     <span class="city" > UV:<%=data.getFeel_like()%> </span >
                 </div >
-<
+
 
         <%}
         }
@@ -182,11 +101,12 @@
                 <script>
                     $(document).ready(function () {
                         // Hàm để thực hiện AJAX request và cập nhật dữ liệu trang
-                        function updateWeatherData() {
+                        function updateWeatherData(province) {
                             $.ajax({
                                 type: "POST",
-                                url: "/WeatherController", // Đặt URL của servlet hoặc controller của bạn ở đây
-                                dataType: "json", // Kì vọng dữ liệu JSON từ máy chủ
+                                url: "/WeatherController",
+                                data: { province: province }, // Thêm tham số "province" vào dữ liệu của yêu cầu
+                                dataType: "json",
                                 success: function (data) {
                                     // Kiểm tra xem có dữ liệu mới hay không
                                     if (data.length > 0) {
@@ -217,7 +137,11 @@
                         }
 
                         // Gọi hàm cập nhật sau mỗi 5 giây
-                        setInterval(updateWeatherData, 5000);
+                        setInterval(function () {
+                            // Lấy giá trị province từ dataList1
+                            var province = '<%=dataList1.get(0).getProvince()%>';
+                            updateWeatherData(province);
+                        }, 10800);
                     });
                 </script>
 
@@ -228,14 +152,14 @@
             <div class="over_view_div">
                 <div class="attibute_popular col-md-5">
                         <span class="attribute_txt">
-                           Tốc độ gió
+                           Độ mây che phủ
                         </span>
                     <div class="value_attribute">
                         <i class="bi bi-wind"></i>
-                        <span class="vl_text">+ 12 Km/h</span>
+                        <span class="vl_text"><%=dataList1.get(0).getCloud_cover()%>%</span>
                     </div>
                     <div class="value_attribute">
-                        <span>+ 12 Km/h</span>
+                        <span><%=dataList1.get(0).getCloud_cover()%>%</span>
                         <span class="vl_text">Gió Tây Nam</span>
                     </div>
                 </div>
@@ -245,23 +169,23 @@
                         </span>
                     <div class="value_attribute">
                         <i class="bi bi-thermometer-half"></i>
-                        <span class="vl_text">33&deg;</span>
+                        <span class="vl_text"><%=dataList1.get(0).getTemperature()%>&deg;</span>
                     </div>
                     <div class="value_attribute">
-                        <span>33&deg;</span>
+                        <span><%=dataList1.get(0).getTemperature()%>&deg;</span>
                         <span class="vl_text">Nắng</span>
                     </div>
                 </div>
                 <div class="attibute_popular col-md-5">
                         <span class="attribute_txt">
-                          Chỉ số UV
+                          Độ ẩm
                         </span>
                     <div class="value_attribute">
                         <i class="bi bi-brightness-high"></i>
-                        <span class="vl_text">0/11</span>
+                        <span class="vl_text"><%=dataList1.get(0).getHumidity()%></span>
                     </div>
                     <div class="value_attribute">
-                        <span>0/11</span>
+                        <span><%=dataList1.get(0).getHumidity()%></span>
                         <span class="vl_text">Bình thường</span>
                     </div>
                 </div>
@@ -271,10 +195,10 @@
                         </span>
                     <div class="value_attribute">
                         <i class="bi bi-cloud-rain-heavy"></i>
-                        <span class="vl_text">+ 12 Km/h</span>
+                        <span class="vl_text"><%=dataList1.get(0).getAccumulation()%>cm</span>
                     </div>
                     <div class="value_attribute">
-                        <span>0 cm</span>
+                        <span><%=dataList1.get(0).getAccumulation()%>cm</span>
                         <span class="vl_text">Không mưa</span>
                     </div>
                 </div>
@@ -284,6 +208,7 @@
         </div>
 <%--        Right--%>
         <div class="col-md-4 right_content">
+            
             <p class="text-center mt-3">19:00 - 20/11</p>
             <p class="text-center">Thành phố Hồ Chí Minh</p>
             <div class="text-center mt-5">

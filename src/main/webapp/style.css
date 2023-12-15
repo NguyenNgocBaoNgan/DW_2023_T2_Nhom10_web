@@ -28,7 +28,7 @@
 
     background-color: #fff;
 }
-li.active{
+.province_list li.active{
     background-color: #ffffff;
 }
 .province_list li a{

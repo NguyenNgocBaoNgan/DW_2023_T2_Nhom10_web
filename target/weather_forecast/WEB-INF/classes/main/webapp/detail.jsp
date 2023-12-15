@@ -34,10 +34,7 @@
 <%@ page import="model.Weather_hour_record" %>
 <div class="container">
 
-  <!-- Check if the user is still on the web page and make AJAX calls if needed -->
-  <script>
-    // Add your AJAX calls here
-  </script>
+
 
   <div class="row" >
 
@@ -157,14 +154,14 @@
       </div >
       <div class="quick_access row mt-3" >
         <%
-          List<Weather_day_record> dataList = (List<Weather_day_record>)request.getAttribute("weatherDataList");
+          List<Weather_hour_record> dataList = (List<Weather_hour_record>)request.getAttribute("whr_byProvince");
           if (dataList == null || dataList.isEmpty()) {
         %>
         <div>No data found</div>
         <%
         } else {
           // Display your data here
-          for (Weather_day_record data : dataList) { %>
+          for (Weather_hour_record data : dataList) { %>
 
         <div class="city_temp col-md-2 active" onclick="window.location.href='detail?id=<%=data.getId()%>'">
           <span class="time" > <%=data.getTime_record()%> - <%=data.getDate_record()%> </span >
@@ -173,34 +170,6 @@
           <span class="city font-weight-bold" > <%=data.getDescription()%></span >
           <span class="city" > UV:<%=data.getFeel_like()%> </span >
         </div >
-        <%--                <div class="city_temp col-md-2" >--%>
-        <%--                    <span class="time" > 20:00 - 20 / 11 </span >--%>
-        <%--                    <span class="temp font-weight-bold" > 22 & deg;--%>
-        <%--                C </span >--%>
-        <%--                    <span class="city font-weight-bold" > Mây rải rác</span >--%>
-        <%--                    <span class="city" > UV:Thấp </span >--%>
-        <%--                </div >--%>
-        <%--                <div class="city_temp col-md-2" >--%>
-        <%--                    <span class="time" > 21:00 - 20 / 11 </span >--%>
-        <%--                    <span class="temp font-weight-bold" > 22 & deg;--%>
-        <%--                C </span >--%>
-        <%--                    <span class="city font-weight-bold" > Mây rải rác</span >--%>
-        <%--                    <span class="city" > UV:Thấp </span >--%>
-        <%--                </div >--%>
-        <%--                <div class="city_temp col-md-2" >--%>
-        <%--                    <span class="time" > 22:00 - 20 / 11 </span >--%>
-        <%--                    <span class="temp font-weight-bold" > 23 & deg;--%>
-        <%--                C </span >--%>
-        <%--                    <span class="city font-weight-bold" > Mây rải rác</span >--%>
-        <%--                    <span class="city" > UV:Thấp </span >--%>
-        <%--                </div >--%>
-        <%--                <div class="city_temp col-md-2" >--%>
-        <%--                    <span class="time" > 23:00 - 20 / 11 </span >--%>
-        <%--                    <span class="temp font-weight-bold" > 24 & deg;--%>
-        <%--                C </span >--%>
-        <%--                    <span class="city font-weight-bold" > Mây rải rác</span >--%>
-        <%--                    <span class="city" > UV:Thấp </span >--%>
-        <%--                </div >--%>
 
         <%}
         }

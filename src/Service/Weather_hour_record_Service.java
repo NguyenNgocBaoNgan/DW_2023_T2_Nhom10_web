@@ -1,5 +1,6 @@
 package Service;
 
+import model.Weather_day_record;
 import model.Weather_hour_record;
 
 import java.sql.*;
@@ -104,4 +105,69 @@ public class Weather_hour_record_Service {
         return weatherHourRecord;
 
     }
+
+
+    public static List<Weather_hour_record> getWeatherhourByProvince(String province) {
+        List<Weather_hour_record> weatherDataList = new ArrayList<Weather_hour_record>();
+
+        try {
+            String query = "SELECT * FROM weather_hour_records WHERE province = ? AND is_available= 'TRUE' AND date_forcast >= NOW() LIMIT 5";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, province);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Weather_hour_record weatherData = new Weather_hour_record(resultSet);
+                weatherData.setId(resultSet.getInt("id"));
+                weatherData.setProvince(resultSet.getString("province"));
+                weatherData.setTime_record(resultSet.getTime("time_record"));
+                weatherData.setDate_record(resultSet.getDate("date_record"));
+                weatherData.setDate_forcast(resultSet.getDate("date_forcast"));
+                weatherData.setTemperature(resultSet.getInt("temperature"));
+                weatherData.setFeel_like(resultSet.getInt("feel_like"));
+                weatherData.setDescription(resultSet.getString("description"));
+                weatherData.setHumidity(resultSet.getInt("humidity"));
+                weatherData.setCloud_cover(resultSet.getInt("cloud_cover"));
+                weatherData.setPrecipitation(resultSet.getInt("precipitation"));
+                weatherData.setAccumulation(resultSet.getFloat("accumulation"));
+                weatherData.setIs_available(resultSet.getString("is_available"));
+                // Set other attributes as needed
+                weatherDataList.add(weatherData);
+            }
+
+            // Close resources
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return weatherDataList;
+    }
+//    public static Weather_hour_record getWeatherhourByProvince(String province) throws SQLException {
+//        Weather_hour_record weatherHourRecord = null;
+//        String query = "SELECT * FROM weather_hour_records WHERE province = ? AND is_vailable= 'TRUE' AND date_forcast >= NOW() LIMIT 5";
+//
+//        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+//            preparedStatement.setString(1, province);
+//
+//            // Step 3: Execute the query
+//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+//                // Step 4: Process the result set
+//                if (resultSet.next()) {
+//                    // Assuming WeatherHourRecord has a constructor that takes a ResultSet
+//                    weatherHourRecord = new Weather_hour_record(resultSet);
+//                }
+//            }
+//
+//
+//            // Step 5: Close the database connection
+//            connection.close();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return weatherHourRecord;
+//
+//    }
 }

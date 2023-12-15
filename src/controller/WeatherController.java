@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
+import model.Weather_hour_record;
 
 @WebServlet(name = "WeatherController", value = "/WeatherController")
 public class WeatherController extends HttpServlet {
@@ -23,11 +24,19 @@ public class WeatherController extends HttpServlet {
             return;
         }
 
-        // Step 2: Query data from the weather_mart database
-        List<Weather_day_record> weatherDataList = WeatherMartService.getAllWeatherData();
+        if (!Weather_hour_record_Service.isDatabaseConnected()) {
+            response.getWriter().write("Database not connected");
+            return;
+        }
 
-        // Step 3: Close the database connection
-        //WeatherMartService.closeDatabaseConnection();
+        // Step 2: Query data from the weather_mart database
+        String province = request.getParameter("province");
+
+        List<Weather_hour_record> whr_byProvince = null;
+        List<Weather_day_record> weatherDataList = WeatherMartService.getAllWeatherData();
+        whr_byProvince = Weather_hour_record_Service.getWeatherhourByProvince(province);
+//            whr = Weather_hour_record_Service.getWeatherhourById(actualID);
+
 
         // Step 4: Check if data is available
         if (weatherDataList.isEmpty()) {
@@ -37,9 +46,13 @@ public class WeatherController extends HttpServlet {
 
         // Step 5: Set data list in request attribute
         request.setAttribute("weatherDataList", weatherDataList);
+        request.setAttribute("whr_byProvince",whr_byProvince);
 
         // Step 6: Forward to the JSP page to display data
         request.getRequestDispatcher("index.jsp").forward(request, response);
+
+        //Step 3: Close the database connection
+        //WeatherMartService.closeDatabaseConnection();
     }
 
 
@@ -53,13 +66,16 @@ public class WeatherController extends HttpServlet {
         }
         response.setContentType("text/plain");
 
+        String province = request.getParameter("province");
+        System.out.println(province);
         // Giả sử bạn có một phương thức để lấy dữ liệu đã cập nhật
-        List<Weather_day_record> updatedWeatherDataList = null;
+        List<Weather_hour_record> updatedWeatherDataList = null;
         try {
-            updatedWeatherDataList = getUpdatedWeatherData();
+            updatedWeatherDataList = getUpdatedWeatherData(province);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
 
         // Chuyển đổi dữ liệu đã cập nhật thành JSON
         String json = convertDataListToJson(updatedWeatherDataList);
@@ -67,16 +83,19 @@ public class WeatherController extends HttpServlet {
 
         // Gửi phản hồi JSON trở lại cho máy khách
         response.getWriter().write(json);
+
+        // Close the database connection
+        //WeatherMartService.closeDatabaseConnection();
     }
 
-    private List<Weather_day_record> getUpdatedWeatherData() throws SQLException {
+    private List<Weather_hour_record> getUpdatedWeatherData(String province) throws SQLException {
         // Thực hiện logic để lấy dữ liệu thời tiết đã cập nhật từ cơ sở dữ liệu
         // Bạn có thể tái sử dụng dịch vụ WeatherMartService hiện tại hoặc tạo một phương thức dịch vụ mới
         // Ví dụ:
-        return WeatherMartService.getAllWeatherData();
+        return Weather_hour_record_Service.getWeatherhourByProvince(province);
     }
 
-    private String convertDataListToJson(List<Weather_day_record> dataList) {
+    private String convertDataListToJson(List<Weather_hour_record> dataList) {
         // Thực hiện logic để chuyển đổi danh sách dữ liệu thành định dạng JSON
         // Bạn có thể sử dụng một thư viện JSON như Jackson hoặc Gson cho mục đích này
         // Ví dụ sử dụng Gson:
