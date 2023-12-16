@@ -40,7 +40,7 @@ public class WeatherController extends HttpServlet {
 
         // Step 4: Check if data is available
         if (weatherDataList.isEmpty()) {
-            response.getWriter().write("No data foundxsxsxs");
+            response.getWriter().write("No data found");
             return;
         }
 

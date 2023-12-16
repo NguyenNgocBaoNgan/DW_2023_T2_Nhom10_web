@@ -111,7 +111,7 @@ public class Weather_hour_record_Service {
         List<Weather_hour_record> weatherDataList = new ArrayList<Weather_hour_record>();
 
         try {
-            String query = "SELECT * FROM weather_hour_records WHERE province = ? AND is_available= 'TRUE' AND date_forcast >= NOW() LIMIT 5";
+            String query = "SELECT * FROM weather_hour_records WHERE province = ? AND is_available= 'TRUE' AND date_forcast >= DATE(NOW()) AND HOUR(weather_hour_records.time_forcast) >= HOUR(NOW()) LIMIT 5";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, province);
             ResultSet resultSet = preparedStatement.executeQuery();

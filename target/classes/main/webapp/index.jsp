@@ -1,6 +1,10 @@
 <%@ page import="java.util.List" %>
 <%@ page import="model.Weather_day_record" %>
 <%@ page import="Service.WeatherMartService" %>
+
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 
@@ -61,12 +65,26 @@
             </ul >
 
         </div >
+        <%
+            // Lấy ngày và giờ hiện tại
+            LocalDate currentDate = LocalDate.now();
+
+            // Định dạng ngày
+            DateTimeFormatter monthYearFormat = DateTimeFormatter.ofPattern("'Tháng' MM / yyyy", new Locale("vi"));
+            DateTimeFormatter fullDateFormat = DateTimeFormatter.ofPattern("EEEE, dd / MM / yyyy", new Locale("vi"));
+            DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+            String formattedMonthYear = currentDate.format(monthYearFormat);
+            String formattedFullDate = currentDate.format(fullDateFormat);
+            String formattedTime = currentDate.atStartOfDay().format(timeFormat);
+        %>
         <div class="col-md-6 center_content" >
             <div class="top_component" >
-                <div class="date col-4" >
-                    <span class="month_and_year font-weight-bold" > Tháng 10 / 2023 </span > <br >
-                    <span class="full_date" > Thứ bảy, 20 / 10 / 2023 </span >
-                </div >
+                <div class="date col-4">
+                    <span class="month_and_year font-weight-bold"><%= formattedMonthYear %></span><br>
+                    <span class="full_date"><%= formattedFullDate %></span><br>
+<%--                    <span class="current_time">Giờ hiện tại: <%= formattedTime %></span>--%>
+                </div>
                 <div class="search col-8" >
                     <i class="fa fa-search text-secondary" ></i >
                     <input type = "text" class="text-secondary" placeholder = "Tìm kiếm..." >
@@ -127,7 +145,7 @@
                                             $(".quick_access").append(newElement);
                                         });
                                     } else {
-                                        // Nếu không có dữ liệu mới, có thể thực hiện các xử lý khác hoặc báo cáo
+                                        // Nếu không có dữ liệu mới, thực hiện báo cáo
                                         console.log("No new data found");
                                     }
                                 },
@@ -137,7 +155,7 @@
                             });
                         }
 
-                        // Gọi hàm cập nhật sau mỗi 5 giây
+                        // Gọi hàm cập nhật sau mỗi 3 tiếng
                         setInterval(function () {
                             // Lấy giá trị province từ dataList1
                             var province = '<%=dataList1.get(0).getProvince()%>';
