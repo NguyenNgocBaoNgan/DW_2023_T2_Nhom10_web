@@ -135,7 +135,7 @@
                                         $.each(data, function (index, newData) {
                                             // Xây dựng HTML cho mỗi phần tử dữ liệu mới
                                             var newElement = $("<div class='city_temp col-md-2 active' onclick='window.location.href=\"detail?id=" + newData.id + "\"'>" +
-                                                "<span class='time'>" + newData.time_record + " - " + newData.date_record + "</span>" +
+                                                "<span class='time'>" + newData.time_forcast + " - " + newData.date_forcast + "</span>" +
                                                 "<span class='temp font-weight-bold'>" + newData.temperature + " &deg;C</span>" +
                                                 "<span class='city font-weight-bold'>" + newData.description + "</span>" +
                                                 "<span class='city'>UV:" + newData.feel_like + "</span>" +
@@ -285,6 +285,102 @@
                 </div>
 
             </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    // Hàm để thực hiện AJAX request và cập nhật dữ liệu trang
+                    function updateWeatherData(province) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/WeatherController",
+                            data: { province: province },
+                            dataType: "json",
+                            success: function (data) {
+                                // Kiểm tra xem có dữ liệu mới hay không
+                                if (data.length > 0) {
+                                    // Lấy phần tử đầu tiên của danh sách
+                                    var newData = data[0];
+                                    console.log(newData)
+                                    // Hiển thị dữ liệu mới
+                                    $(".col-md-4.right_content").empty(); // Xóa nội dung cũ
+
+
+                                        // Xây dựng HTML cho mỗi phần tử dữ liệu mới
+                                        var newElement = $(
+                                            "<p class='text-center mt-3'>" + newData.time_forcast + " - " + newData.date_forcast + "</p>" +
+                                            "<p class='text-center'>" + newData.province + "</p>" +
+                                            "<div class='text-center mt-5'>" +
+                                            "<div class='d-flex flex-row justify-content-center'>" +
+                                            "<div class='text-center me-3'>" +
+                                            "<span><i class='bi bi-cloud-drizzle-fill fs-1'></i></span>" +
+                                            "</div>" +
+                                            "<div class=''>" +
+                                            "<div class='temperature'>" +
+                                            "<span class='value'>" + newData.temperature + "&deg;C</span>" +
+                                            "</div>" +
+                                            "<p class='text-start text-secondary'>" + newData.description + "</p>" +
+                                            "</div>" +
+                                            "</div>" +
+                                            "<div class='px-3 mt-5'>" +
+                                            "<div class='col-12 row justify-content-between row mt-3 px-3'>" +
+                                            "<div class='col-7 text-secondary text-start'><i class='bi bi-thermometer-half'></i></span> Cảm giác nhiệt: </div>" +
+                                            "<div class='col-5 text-secondary text-end'>" + newData.feel_like + "&deg;</div>" +
+                                            "</div>" +
+                                            "<hr>" +
+                                            "<div class='col-12 row justify-content-between row mt-3 px-3'>" +
+                                            "<div class='col-7 text-secondary text-start'><i class='bi bi-cloud-fog2'></i></span> Hướng gió: </div>" +
+                                            "<div class='col-5 text-secondary text-end'>" + newData.wind_direction + "</div>" +
+                                            "</div>" +
+                                            "<hr>" +
+                                            "<div class='col-12 row justify-content-between row mt-3 px-3'>" +
+                                            "<div class='col-7 text-secondary text-start'><i class='bi bi-wind'></i></span> Tốc độ gió: </div>" +
+                                            "<div class='col-5 text-secondary text-end'>" + newData.wind_speed + "km/h</div>" +
+                                            "</div>" +
+                                            "<hr>" +
+                                            "<div class='col-12 row justify-content-between row mt-3 px-3'>" +
+                                            "<div class='col-7 text-secondary text-start'><i class='bi bi-droplet'></i></span> Độ ẩm: </div>" +
+                                            "<div class='col-5 text-secondary text-end'>" + newData.humidity + "%</div>" +
+                                            "</div>" +
+                                            "<hr>" +
+                                            "<div class='col-12 row justify-content-between row mt-3 px-3'>" +
+                                            "<div class='col-7 text-secondary text-start'><i class='bi bi-brightness-high'></i></span> Chỉ số UV: </div>" +
+                                            "<div class='col-5 text-secondary text-end'>" + newData.uv_index + "</div>" +
+                                            "</div>" +
+                                            "<hr>" +
+                                            "<div class='col-12 row justify-content-between row mt-3 px-3'>" +
+                                            "<div class='col-7 text-secondary text-start'><span><i class='bi bi-cloud-rain-heavy'></i></span> Lượng mưa: </div>" +
+                                            "<div class='col-5 text-secondary text-end'>" + newData.accumulation + "cm</div>" +
+                                            "</div>" +
+                                            "<hr>" +
+                                            "</div>" +
+                                            "</div>" +
+                                            "</div>" +
+                                            "</div>");
+
+                                        // Thêm phần tử mới vào .col-md-4.right_content
+                                        $(".col-md-4.right_content").append(newElement);
+
+                                } else {
+                                    // Nếu không có dữ liệu mới, thực hiện báo cáo
+                                    console.log("No new data found");
+                                }
+                            },
+                            error: function (error) {
+                                console.error("Error:", error);
+                            }
+                        });
+                    }
+
+                    // Gọi hàm cập nhật sau mỗi 3 tiếng
+                    setInterval(function () {
+                        // Lấy giá trị province từ dataList1
+                        var province = '<%=dataList1.get(0).getProvince()%>';
+                        updateWeatherData(province);
+                    }, 10800);
+                });
+            </script>
+
         </div>
     </div>
 
