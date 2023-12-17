@@ -2,17 +2,22 @@ package controller;
 
 import Service.WeatherMartService;
 import Service.Weather_hour_record_Service;
+import com.google.gson.JsonIOException;
 import model.Weather_day_record;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
 import model.Weather_hour_record;
+import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebServlet(name = "WeatherController", value = "/WeatherController")
 public class WeatherController extends HttpServlet {
@@ -95,7 +100,7 @@ public class WeatherController extends HttpServlet {
         return Weather_hour_record_Service.getWeatherhourByProvince(province);
     }
 
-    private String convertDataListToJson(List<Weather_hour_record> dataList) {
+    private String convertDataListToJson(List<Weather_hour_record> dataList) throws IOException {
         // Thực hiện logic để chuyển đổi danh sách dữ liệu thành định dạng JSON
 
         Gson gson = new Gson();
